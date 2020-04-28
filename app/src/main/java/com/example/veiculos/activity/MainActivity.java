@@ -1,8 +1,10 @@
-package com.example.veiculos;
+package com.example.veiculos.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.veiculos.R;
 
 public class MainActivity extends AppCompatActivity {
 

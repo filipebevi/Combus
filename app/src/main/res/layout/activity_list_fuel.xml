@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListagemCombustivel"
+    android:layout_margin="6dp"
+    tools:context=".activity.ListagemCombustivel"
     tools:ignore="MissingDefaultResource">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listAbastecimento"
+        android:id="@+id/rvabasteci"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
