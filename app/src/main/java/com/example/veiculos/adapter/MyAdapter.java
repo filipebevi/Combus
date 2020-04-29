@@ -9,8 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.veiculos.R;
+import com.example.veiculos.model.Abastecimento;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+
+    List<Abastecimento> lista = new ArrayList<>();
+
+    public MyAdapter(List<Abastecimento> lista){
+        this.lista = lista;
+    }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -20,6 +30,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         TextView litros;
         TextView valor;
         TextView km;
+        TextView total;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -31,6 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             litros = itemView.findViewById(R.id.tvLitros);
             valor = itemView.findViewById(R.id.tvValor);
             km = itemView.findViewById(R.id.tvKm);
+            total = itemView.findViewById(R.id.tvTotal);
         }
         // each data item is just a string in this case
 
@@ -47,18 +59,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tipo.setText("Gasolina");
-        holder.posto.setText("Extra");
-        holder.data.setText("12/12/2020");
-        holder.litros.setText("50 lts");
-        holder.valor.setText("R$ 200,00");
-        holder.km.setText("999 km");
+
+        Abastecimento a = lista.get(position);
+        holder.tipo.setText(a.getTipo());
+        holder.posto.setText("Posto: "+a.getPosto());
+        holder.data.setText(a.getData().toString());
+        holder.litros.setText("Litros: "+a.getLitros());
+        holder.valor.setText("Valor: R$"+a.getValor());
+        holder.km.setText("Km: "+a.getKm());
+        holder.total.setText("Total: R$"+a.getTotal());
 
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return lista.size();
     }
 
 

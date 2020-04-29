@@ -80,9 +80,35 @@
             android:inputType="textShortMessage" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rbGasolina"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gasolina" />
+
+        <RadioButton
+            android:id="@+id/rdAlcool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alcool" />
+    </RadioGroup>
+
     <Button
-        android:id="@+id/button"
+        android:id="@+id/bSalvar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="salvar"
         android:text="Salvar" />
+
+    <Button
+        android:id="@+id/bListar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="listar"
+        android:text="Listar" />
 </LinearLayout>
