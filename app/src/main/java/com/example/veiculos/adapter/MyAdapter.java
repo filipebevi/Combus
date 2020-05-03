@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.veiculos.R;
-import com.example.veiculos.model.Abastecimento;
+import com.example.veiculos.Abastecimento.Abastecimento;
 
 import java.util.ArrayList;
 import java.util.List;

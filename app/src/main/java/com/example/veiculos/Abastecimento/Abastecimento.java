@@ -1,12 +1,13 @@
-package com.example.veiculos.model;
+package com.example.veiculos.Abastecimento;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class Abastecimento implements Serializable {
 
+    private int id;
     private String tipo;
-    private Date data;
+    private String data;
     private Double valor;
     private Double litros;
     private String posto;
@@ -17,6 +18,14 @@ public class Abastecimento implements Serializable {
     public Abastecimento() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTipo() {
         return tipo;
     }
@@ -25,11 +34,11 @@ public class Abastecimento implements Serializable {
         this.tipo = tipo;
     }
 
-    public Date getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(String data) {
         this.data = data;
     }
 
@@ -70,5 +79,7 @@ public class Abastecimento implements Serializable {
     public Double getTotal() {
         return total;
     }
+
+
 
 }
