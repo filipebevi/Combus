@@ -15,11 +15,6 @@
         android:gravity="center"
         android:text="Cadastro do Abastecimento" />
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInData"
         android:layout_width="match_parent"

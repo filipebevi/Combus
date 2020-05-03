@@ -24,34 +24,40 @@ public class AbastecimentoSQLitle implements AbastecimentoDAO {
     }
 
     @Override
-    public boolean salvarAbastecimento(Abastecimento a, String acao) {
+    public boolean salvarAbastecimento(Abastecimento a) {
         boolean resultado = false;
 
         ContentValues cv = new ContentValues();
-        cv.put("tipo",a.getTipo());
-        cv.put("km",a.getKm());
-        cv.put("litros",a.getLitros());
-        cv.put("posto",a.getPosto());
-        cv.put("total",a.getTotal());
-        cv.put("valor",a.getValor());
-        cv.put("data",a.getData().toString());
+        cv.put("tipo", a.getTipo());
+        cv.put("km", a.getKm());
+        cv.put("litros", a.getLitros());
+        cv.put("posto", a.getPosto());
+        cv.put("total", a.getTotal());
+        cv.put("valor", a.getValor());
+        cv.put("data", a.getData().toString());
 
-
-        switch (acao){
-            case "insert":
-                try {
-                    escreve.insert(ConectaSQLite.TABELA,null, cv);
-                }catch (Exception e){
-                    Log.i("ERRO","ERRO NA INCLUSAO DO REGISTRO");
-                }
-
+        if(a.getId()==0 ){
+            try {
+                escreve.insert(ConectaSQLite.TABELA, null, cv);
                 resultado = true;
-                break;
-            case "update":
-                //metodo para atualizar no banco;
+            } catch (Exception e) {
+                Log.i("ERRO", "ERRO NA INCLUSAO DO REGISTRO");
+            }
+
+        }else {
+            try {
+                escreve.update(ConectaSQLite.TABELA,cv,"id="+a.getId(),null);
                 resultado = true;
-                break;
+            } catch (Exception e) {
+                Log.i("ERRO", "ERRO NA ALTERACAO DO REGISTRO");
+            }
+
         }
+
+
+
+
+
 
         return resultado;
     }
@@ -59,17 +65,24 @@ public class AbastecimentoSQLitle implements AbastecimentoDAO {
     @Override
     public boolean excluirAbastecimento(Abastecimento a) {
         //metodo para excluir o abastecimento;
-        return false;
+        try {
+            escreve.delete(ConectaSQLite.TABELA,"id="+a.getId(),null);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+
     }
 
     @Override
     public List<Abastecimento> listarAbastecimento() {
         List<Abastecimento> lista = new ArrayList<>();
-        String sql = "SELECT * FROM "+ConectaSQLite.TABELA+"; ";
+        String sql = "SELECT * FROM " + ConectaSQLite.TABELA + "; ";
 
-        Cursor c = le.rawQuery(sql,null);
+        Cursor c = le.rawQuery(sql, null);
 
-        while(c.moveToNext()){
+        while (c.moveToNext()) {
             Abastecimento a = new Abastecimento();
 
             int id = c.getInt(c.getColumnIndex("id"));
@@ -89,7 +102,6 @@ public class AbastecimentoSQLitle implements AbastecimentoDAO {
             a.setValor(valor);
 
             lista.add(a);
-
 
 
         }
