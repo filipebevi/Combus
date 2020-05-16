@@ -1,5 +1,6 @@
 package com.example.veiculos.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -9,17 +10,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.veiculos.Abastecimento.AbastecimentoDAO;
-import com.example.veiculos.Abastecimento.AbastecimentoSQLitle;
+import com.example.veiculos.abastecimento.AbastecimentoDAO;
+import com.example.veiculos.abastecimento.AbastecimentoSQLitle;
 import com.example.veiculos.R;
 import com.example.veiculos.adapter.MyAdapter;
-import com.example.veiculos.Abastecimento.Abastecimento;
+import com.example.veiculos.abastecimento.Abastecimento;
 import com.example.veiculos.adapter.RecyclerItemClickListener;
+import com.example.veiculos.usuario.Usuario;
+import com.example.veiculos.util.Base64Custom;
+import com.example.veiculos.util.ConfiguracaoFirebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +41,50 @@ public class ListaCombustivelActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter mAdapter;
-    private List<Abastecimento> lista;
-    Abastecimento a;
+    private List<Abastecimento> lista = new ArrayList<>();
+    private Abastecimento abastecimento;
+    private Usuario usuario;
+    private double media,km,litro;
+    private TextView textView_media;
+    private TextView textView_sadacao;
+
+
+
+    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+    private DatabaseReference dr = ConfiguracaoFirebase.getDatabase();
+    private String idUsuario = Base64Custom.codificar(autenticacao.getCurrentUser().getEmail());
+
+    private DatabaseReference drAbastecimento = dr.child(idUsuario).child("abastecimento");
+    private DatabaseReference drUsuario = dr.child(idUsuario).child("usuario");
+
+
+
+    //O menu superior direito para salvar o abastecimento---------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {//atribuir o menu
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {//trata a ação do menu
+        switch (item.getItemId()) {
+            case R.id.sair_menu:
+                autenticacao.signOut();
+                finish();
+                startActivity(new Intent(this, PrincipalActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_combustivel);
+        textView_media = findViewById(R.id.textView_media);
+        textView_sadacao = findViewById(R.id.textView_saudacao);
         recyclerView = findViewById(R.id.rvabasteci);
         recyclerView.addOnItemTouchListener(//O ENVENTO DE CLICK TEM QUE FICAR DENTRO DO CREATE.
                 new RecyclerItemClickListener(
@@ -44,45 +93,30 @@ public class ListaCombustivelActivity extends AppCompatActivity {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-
-                                a = lista.get(position);
-
+                                abastecimento = lista.get(position);
                                 Intent intent = new Intent(ListaCombustivelActivity.this, CadastroAbastecimentoActivity.class);
-                                intent.putExtra("Abastecimento", a);
-
+                                intent.putExtra("Abastecimento", abastecimento);
                                 startActivity(intent);
                             }
 
                             @Override
                             public void onLongItemClick(View view, int position) {
-                                a = lista.get(position);
+                                abastecimento = lista.get(position);
                                 AlertDialog.Builder dialog = new AlertDialog.Builder(ListaCombustivelActivity.this);
                                 dialog.setTitle("Deseja apagar?");
                                 dialog.setMessage("Deseja apagar este abastecimento?");
                                 dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        AbastecimentoDAO ad = new AbastecimentoSQLitle(getApplicationContext());
-                                        if (ad.excluirAbastecimento(a)) {
-                                            listarAbastecimento();
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Tarefa foi Excluída!",
-                                                    Toast.LENGTH_SHORT).show();
 
-                                        } else {
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Erro ao excluir tarefa!",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
+                                        drAbastecimento.child(abastecimento.getId()).removeValue();
+                                        drUsuario.child("km").setValue(usuario.getKm() - abastecimento.getKm());
+                                        drUsuario.child("litros").setValue(usuario.getLitros() - abastecimento.getLitros());
                                     }
                                 });
-
                                 dialog.setNegativeButton("Não", null);
-
                                 //Exibir dialog
                                 dialog.show();
-
-
                             }
 
                             @Override
@@ -92,7 +126,8 @@ public class ListaCombustivelActivity extends AppCompatActivity {
                         }
                 )
         );
-        a = new Abastecimento();
+        abastecimento = new Abastecimento();
+
     }
 
     @Override
@@ -107,11 +142,43 @@ public class ListaCombustivelActivity extends AppCompatActivity {
     }
 
     public void listarAbastecimento() {
-        AbastecimentoDAO ad = new AbastecimentoSQLitle(getApplicationContext());
-        lista = ad.listarAbastecimento();
+        drUsuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usuario = dataSnapshot.getValue(Usuario.class);
+                km=usuario.getKm();
+                litro=usuario.getLitros();
+                media=km/litro;
+
+                textView_sadacao.setText("Olá, "+usuario.getNome()+"!");
+                textView_media.setText(String.format("%.2f",media)+" Km/l");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        drAbastecimento.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                lista.clear();
+                for(DataSnapshot dados : dataSnapshot.getChildren()){
+                    abastecimento = dados.getValue(Abastecimento.class);
+                    abastecimento.setId(dados.getKey());//Recuperar a chave
+                    lista.add(abastecimento);
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
         //CONFIGURAR O ADAPTER
         mAdapter = new MyAdapter(lista);

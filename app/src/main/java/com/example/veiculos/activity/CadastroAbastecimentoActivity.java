@@ -3,7 +3,6 @@ package com.example.veiculos.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,15 +13,22 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.veiculos.Abastecimento.AbastecimentoDAO;
-import com.example.veiculos.Abastecimento.AbastecimentoSQLitle;
 import com.example.veiculos.R;
-import com.example.veiculos.Abastecimento.Abastecimento;
+import com.example.veiculos.abastecimento.Abastecimento;
+import com.example.veiculos.usuario.Usuario;
+import com.example.veiculos.util.Base64Custom;
+import com.example.veiculos.util.ConfiguracaoFirebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 
 public class CadastroAbastecimentoActivity extends AppCompatActivity {
 
@@ -34,33 +40,27 @@ public class CadastroAbastecimentoActivity extends AppCompatActivity {
     EditText litros;
     EditText valor;
 
-    Abastecimento a;
 
-    //O menu superior direito para salvar o abastecimento---------------------------------------
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {//atribuir o menu
-        getMenuInflater().inflate(R.menu.menu, menu);
+    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    Calendar cal = Calendar.getInstance();
+    String dataAtual = df.format(cal.getTime());
 
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {//trata a ação do menu
-        switch (item.getItemId()) {
-            case R.id.salvar_menu:
-                salvarAbastecimento();
-                break;
+    Abastecimento abastecimento;
 
-        }
+    FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+    DatabaseReference dr = ConfiguracaoFirebase.getDatabase();
+    String idUsuario = Base64Custom.codificar(autenticacao.getCurrentUser().getEmail());
 
-        return super.onOptionsItemSelected(item);
-    }
-    //------------------------------------------------------------------------------
+    DatabaseReference drUser = dr.child(idUsuario).child("usuario");
+    double km1, litros1, kmAlteracao, litrosAlteracao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_abastecimento);
+        pegarValores();
 
         tipo = findViewById(R.id.radioGroup);
         data = findViewById(R.id.editData);
@@ -69,52 +69,123 @@ public class CadastroAbastecimentoActivity extends AppCompatActivity {
         litros = findViewById(R.id.editLitros);
         valor = findViewById(R.id.editValor);
 
+        abastecimento = (Abastecimento) getIntent().getSerializableExtra("Abastecimento");
 
-        a = (Abastecimento) getIntent().getSerializableExtra("Abastecimento");
-
-        if (a != null) {
-
-            if(a.getTipo().equals("Gasolina")){
+        if (abastecimento != null) {
+            if (abastecimento.getTipo().equals("Gasolina")) {
                 tipo2 = findViewById(R.id.rbGasolina);
                 tipo2.setChecked(true);
             } else {
                 tipo2 = findViewById(R.id.rdAlcool);
                 tipo2.setChecked(true);
             }
-
-
-            data.setText(a.getData());
-            posto.setText(a.getPosto());
-            km.setText(a.getKm().toString());
-            litros.setText(a.getLitros().toString());
-            valor.setText(a.getValor().toString());
+            data.setText(abastecimento.getData().toString());
+            posto.setText(abastecimento.getPosto());
+            km.setText(abastecimento.getKm().toString());
+            litros.setText(abastecimento.getLitros().toString());
+            valor.setText(abastecimento.getValor().toString());
+            kmAlteracao = abastecimento.getKm();
+            litrosAlteracao = abastecimento.getLitros();
         } else {
-            a = new Abastecimento();
+            abastecimento = new Abastecimento();
+            data.setText(dataAtual);
+
+        }
+    }
+
+    public void salvarAbastecimento(View view) {
+
+        if (validarCampos()) {
+            tipo2 = findViewById(tipo.getCheckedRadioButtonId());
+
+            abastecimento.setTipo(tipo2 != null ? tipo2.getText().toString() : null);
+            abastecimento.setData(data.getText().toString());
+            abastecimento.setPosto(posto.getText().toString());
+            abastecimento.setKm(Double.parseDouble(km.getText().toString().replaceAll(",", ".")));
+            abastecimento.setLitros(Double.parseDouble(litros.getText().toString().replaceAll(",", ".")));
+            abastecimento.setValor(Double.parseDouble(valor.getText().toString().replaceAll(",", ".")));
+            if (abastecimento.getId() != null) {
+                dr.child(idUsuario)
+                        .child("abastecimento")
+                        .child(abastecimento.getId())
+                        .setValue(abastecimento);
+                drUser.child("km").setValue((km1 - kmAlteracao) + abastecimento.getKm());
+                drUser.child("litros").setValue((litros1 - litrosAlteracao) + abastecimento.getLitros());
+                Toast toast = Toast.makeText(this, "Abastecimento Alterado", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                dr.child(idUsuario)
+                        .child("abastecimento")
+                        .push()
+                        .setValue(abastecimento);
+                drUser.child("km").setValue(km1 + abastecimento.getKm());
+                drUser.child("litros").setValue(litros1 + abastecimento.getLitros());
+                Toast toast = Toast.makeText(this, "Abastecimento Salvo", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            finish();//fecha a activity
         }
 
     }
 
 
-    public void salvarAbastecimento() {
-        tipo2 = findViewById(tipo.getCheckedRadioButtonId());
-        a.setTipo(tipo2.getText().toString());
-        int i = tipo.getCheckedRadioButtonId();
-        a.setData(data.getText().toString());
-        a.setPosto(posto.getText().toString());
-        a.setKm(Double.valueOf(km.getText().toString()));
-        a.setLitros(Double.valueOf(litros.getText().toString()));
-        a.setValor(Double.valueOf(valor.getText().toString()));
+    public void pegarValores() {
+        drUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Usuario usuario = dataSnapshot.getValue(Usuario.class);
+                km1 = usuario.getKm();
+                litros1 = usuario.getLitros();
+            }
 
-        AbastecimentoDAO ab = new AbastecimentoSQLitle(getApplicationContext());
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+    }
 
-        ab.salvarAbastecimento(a);
+    public boolean validarCampos() {
+        String msg;
+        boolean dataValida=false;
+        df.setLenient (false); // aqui o pulo do gato
+        try {
+            df.parse (data.getText().toString());
+            dataValida=true;
 
+        } catch (ParseException ex) {
+            // data inválida
+        }
+        if (!data.getText().toString().isEmpty() && dataValida) {
 
-        Toast toast = Toast.makeText(this, "Salvo", Toast.LENGTH_SHORT);
+            if (!litros.getText().toString().isEmpty()) {
+                if (!km.getText().toString().isEmpty()) {
+                    if (!posto.getText().toString().isEmpty()) {
+                        if (tipo.getCheckedRadioButtonId() != (-1)) {
+                            if (!valor.getText().toString().isEmpty()) {
+                                return true;
+                            } else {
+                                msg = "Informe o valor";
+                            }
+                        } else {
+                            msg = "Informe o tipo";
+                        }
+                    } else {
+                        msg = "Informe o Posto";
+                    }
+                } else {
+                    msg = "Informe o km";
+                }
+            } else {
+                msg = "Informe os litros";
+            }
+        } else {
+            msg = "Informe uma data válida";
+        }
+
+        Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
         toast.show();
-
-        finish();
+        return false;
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.veiculos.Abastecimento;
+package com.example.veiculos.abastecimento;
 
 import java.util.List;
 

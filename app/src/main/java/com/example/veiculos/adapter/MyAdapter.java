@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.veiculos.R;
-import com.example.veiculos.Abastecimento.Abastecimento;
+import com.example.veiculos.abastecimento.Abastecimento;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public int getItemCount() {
-        return lista.size();
+        return lista==null?0:lista.size();
     }
 
 

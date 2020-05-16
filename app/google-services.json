@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1084206668558",
+    "firebase_url": "https://veiculos-18c78.firebaseio.com",
+    "project_id": "veiculos-18c78",
+    "storage_bucket": "veiculos-18c78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1084206668558:android:80e9db34aec496e968955f",
+        "android_client_info": {
+          "package_name": "com.example.veiculos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1084206668558-ujk8ls6q409oq9pni0bd1si1ik8j322u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.veiculos",
+            "certificate_hash": "9be643f5af40f079091767abb2d60a283efa584d"
+          }
+        },
+        {
+          "client_id": "1084206668558-d8fvm7jskrqpu602pakdn24q703bpk1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-zmIEND1L6o_fIUHqo05ghado0pqwfSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1084206668558-d8fvm7jskrqpu602pakdn24q703bpk1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

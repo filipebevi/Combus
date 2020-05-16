@@ -1,4 +1,4 @@
-package com.example.veiculos.Abastecimento;
+package com.example.veiculos.abastecimento;
 
 
 import android.content.ContentValues;
@@ -36,7 +36,7 @@ public class AbastecimentoSQLitle implements AbastecimentoDAO {
         cv.put("valor", a.getValor());
         cv.put("data", a.getData().toString());
 
-        if(a.getId()==0 ){
+        if(a.getId()==null ){
             try {
                 escreve.insert(ConectaSQLite.TABELA, null, cv);
                 resultado = true;
@@ -93,8 +93,8 @@ public class AbastecimentoSQLitle implements AbastecimentoDAO {
             Double valor = c.getDouble(c.getColumnIndex("valor"));
             Double litros = c.getDouble(c.getColumnIndex("litros"));
 
-            a.setData(data);
-            a.setId(id);
+            //a.setData(data);
+            //a.setId(id);
             a.setKm(km);
             a.setLitros(litros);
             a.setPosto(posto);

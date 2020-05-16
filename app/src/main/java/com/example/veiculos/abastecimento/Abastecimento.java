@@ -1,11 +1,14 @@
-package com.example.veiculos.Abastecimento;
+package com.example.veiculos.abastecimento;
+
+import com.example.veiculos.usuario.Usuario;
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 public class Abastecimento implements Serializable {
 
-    private int id;
+    private String id;
     private String tipo;
     private String data;
     private Double valor;
@@ -18,11 +21,13 @@ public class Abastecimento implements Serializable {
     public Abastecimento() {
     }
 
-    public int getId() {
+
+    @Exclude
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -78,6 +83,10 @@ public class Abastecimento implements Serializable {
 
     public Double getTotal() {
         return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
 
