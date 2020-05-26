@@ -1,10 +1,8 @@
 package com.example.veiculos.abastecimento;
 
-import com.example.veiculos.usuario.Usuario;
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 public class Abastecimento implements Serializable {
 

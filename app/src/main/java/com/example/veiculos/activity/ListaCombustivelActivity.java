@@ -3,7 +3,6 @@ package com.example.veiculos.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,12 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.veiculos.abastecimento.AbastecimentoDAO;
-import com.example.veiculos.abastecimento.AbastecimentoSQLitle;
 import com.example.veiculos.R;
 import com.example.veiculos.adapter.MyAdapter;
 import com.example.veiculos.abastecimento.Abastecimento;
@@ -112,6 +108,11 @@ public class ListaCombustivelActivity extends AppCompatActivity {
                                         drAbastecimento.child(abastecimento.getId()).removeValue();
                                         drUsuario.child("km").setValue(usuario.getKm() - abastecimento.getKm());
                                         drUsuario.child("litros").setValue(usuario.getLitros() - abastecimento.getLitros());
+                                            Toast toast = Toast.makeText(getApplicationContext(), "Abastecimento apagado!", Toast.LENGTH_SHORT);
+                                            toast.show();
+
+
+
                                     }
                                 });
                                 dialog.setNegativeButton("Não", null);
@@ -148,7 +149,7 @@ public class ListaCombustivelActivity extends AppCompatActivity {
                 usuario = dataSnapshot.getValue(Usuario.class);
                 km=usuario.getKm();
                 litro=usuario.getLitros();
-                media=km/litro;
+                media=litro==0.0?0.0:km/litro;
 
                 textView_sadacao.setText("Olá, "+usuario.getNome()+"!");
                 textView_media.setText(String.format("%.2f",media)+" Km/l");

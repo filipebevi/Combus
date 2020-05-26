@@ -105,6 +105,7 @@
     <Button
         android:id="@+id/button_salvar"
         style="@style/botao_customizado"
+        android:background="@drawable/botao_customizado2"
         android:onClick="salvarAbastecimento"
         android:text="Salvar" />
 

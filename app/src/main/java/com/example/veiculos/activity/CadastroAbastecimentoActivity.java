@@ -1,12 +1,8 @@
 package com.example.veiculos.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -27,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 
 public class CadastroAbastecimentoActivity extends AppCompatActivity {
@@ -60,6 +55,8 @@ public class CadastroAbastecimentoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_abastecimento);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Abastecimento");
         pegarValores();
 
         tipo = findViewById(R.id.radioGroup);
@@ -109,19 +106,24 @@ public class CadastroAbastecimentoActivity extends AppCompatActivity {
                         .child("abastecimento")
                         .child(abastecimento.getId())
                         .setValue(abastecimento);
-                drUser.child("km").setValue((km1 - kmAlteracao) + abastecimento.getKm());
-                drUser.child("litros").setValue((litros1 - litrosAlteracao) + abastecimento.getLitros());
-                Toast toast = Toast.makeText(this, "Abastecimento Alterado", Toast.LENGTH_SHORT);
-                toast.show();
+                    drUser.child("km").setValue((km1 - kmAlteracao) + abastecimento.getKm());
+                    drUser.child("litros").setValue((litros1 - litrosAlteracao) + abastecimento.getLitros());
+                    Toast toast = Toast.makeText(this, "Abastecimento Alterado", Toast.LENGTH_SHORT);
+                    toast.show();
+
+
             } else {
                 dr.child(idUsuario)
                         .child("abastecimento")
                         .push()
                         .setValue(abastecimento);
-                drUser.child("km").setValue(km1 + abastecimento.getKm());
-                drUser.child("litros").setValue(litros1 + abastecimento.getLitros());
-                Toast toast = Toast.makeText(this, "Abastecimento Salvo", Toast.LENGTH_SHORT);
-                toast.show();
+                    drUser.child("km").setValue(km1 + abastecimento.getKm());
+                    drUser.child("litros").setValue(litros1 + abastecimento.getLitros());
+                    Toast toast = Toast.makeText(this, "Abastecimento Salvo", Toast.LENGTH_SHORT);
+                    toast.show();
+
+
+
             }
             finish();//fecha a activity
         }
