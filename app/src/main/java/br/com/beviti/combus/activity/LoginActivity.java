@@ -1,4 +1,4 @@
-package com.example.veiculos.activity;
+package br.com.beviti.combus.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.veiculos.R;
-import com.example.veiculos.util.ConfiguracaoFirebase;
+import br.com.beviti.combus.R;
+import br.com.beviti.combus.util.ConfiguracaoFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

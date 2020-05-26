@@ -8,7 +8,7 @@
     android:background="@drawable/layout_customizado"
     android:orientation="vertical"
     android:padding="8dp"
-    tools:context=".activity.CadastroAbastecimentoActivity">
+    tools:context="br.com.beviti.combus.activity.CadastroAbastecimentoActivity">
 
     <TextView
         android:id="@+id/textView9"

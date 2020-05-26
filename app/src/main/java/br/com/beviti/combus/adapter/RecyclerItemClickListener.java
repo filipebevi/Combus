@@ -1,4 +1,4 @@
-package com.example.veiculos.adapter;
+package br.com.beviti.combus.adapter;
 import android.content.Context;
 
 import android.view.GestureDetector;

@@ -1,4 +1,4 @@
-package com.example.veiculos.activity;
+package br.com.beviti.combus.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -16,13 +16,13 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.veiculos.R;
-import com.example.veiculos.adapter.MyAdapter;
-import com.example.veiculos.abastecimento.Abastecimento;
-import com.example.veiculos.adapter.RecyclerItemClickListener;
-import com.example.veiculos.usuario.Usuario;
-import com.example.veiculos.util.Base64Custom;
-import com.example.veiculos.util.ConfiguracaoFirebase;
+import br.com.beviti.combus.R;
+import br.com.beviti.combus.adapter.MyAdapter;
+import br.com.beviti.combus.abastecimento.Abastecimento;
+import br.com.beviti.combus.adapter.RecyclerItemClickListener;
+import br.com.beviti.combus.usuario.Usuario;
+import br.com.beviti.combus.util.Base64Custom;
+import br.com.beviti.combus.util.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

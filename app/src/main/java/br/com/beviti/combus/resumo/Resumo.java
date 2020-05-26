@@ -1,4 +1,4 @@
-package com.example.veiculos.resumo;
+package br.com.beviti.combus.resumo;
 
 import com.google.firebase.database.Exclude;
 

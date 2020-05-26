@@ -1,4 +1,4 @@
-package com.example.veiculos.abastecimento;
+package br.com.beviti.combus.abastecimento;
 
 
 import android.content.ContentValues;
@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.veiculos.util.ConectaSQLite;
+import br.com.beviti.combus.util.ConectaSQLite;
 
 import java.util.ArrayList;
 import java.util.List;

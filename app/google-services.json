@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1084206668558:android:80e9db34aec496e968955f",
         "android_client_info": {
-          "package_name": "com.example.veiculos"
+          "package_name": "br.com.beviti.combus"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "1084206668558-ujk8ls6q409oq9pni0bd1si1ik8j322u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.veiculos",
+            "package_name": "br.com.beviti.combus",
             "certificate_hash": "9be643f5af40f079091767abb2d60a283efa584d"
           }
         },

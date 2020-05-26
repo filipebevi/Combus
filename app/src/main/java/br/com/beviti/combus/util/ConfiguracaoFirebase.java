@@ -1,4 +1,4 @@
-package com.example.veiculos.util;
+package br.com.beviti.combus.util;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

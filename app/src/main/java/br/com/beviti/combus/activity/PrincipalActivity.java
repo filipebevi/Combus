@@ -1,4 +1,4 @@
-package com.example.veiculos.activity;
+package br.com.beviti.combus.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.veiculos.R;
-import com.example.veiculos.util.ConfiguracaoFirebase;
+import br.com.beviti.combus.R;
+import br.com.beviti.combus.util.ConfiguracaoFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class PrincipalActivity extends AppCompatActivity {

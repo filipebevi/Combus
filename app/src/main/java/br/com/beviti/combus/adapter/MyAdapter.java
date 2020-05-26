@@ -1,4 +1,4 @@
-package com.example.veiculos.adapter;
+package br.com.beviti.combus.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.veiculos.R;
-import com.example.veiculos.abastecimento.Abastecimento;
+import br.com.beviti.combus.R;
+import br.com.beviti.combus.abastecimento.Abastecimento;
 
 import java.util.ArrayList;
 import java.util.List;

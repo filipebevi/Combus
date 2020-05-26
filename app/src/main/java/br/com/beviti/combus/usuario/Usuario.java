@@ -1,6 +1,6 @@
-package com.example.veiculos.usuario;
+package br.com.beviti.combus.usuario;
 
-import com.example.veiculos.util.ConfiguracaoFirebase;
+import br.com.beviti.combus.util.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 

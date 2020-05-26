@@ -1,4 +1,4 @@
-package com.example.veiculos.abastecimento;
+package br.com.beviti.combus.abastecimento;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.veiculos.util;
+package br.com.beviti.combus.util;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
