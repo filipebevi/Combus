@@ -1,7 +1,7 @@
 # Combus
 Controle de Combustivel(Android)
 
-App desenvolvido como item do meu portfolio. Trata-se de app para calcular a média de consumo de um veiculo, tendo como base registros de abastecimentos com quilometragem percorrida, litros abastecidos e preço do litro. Como o sistema é apenas uma demonstração, ele se baseia em um CRUD de abastecimento que calcula a média utilizando o total dos registros de KM e Litros total.
+App desenvolvido como item do meu portfolio. Trata-se de app para calcular a média de consumo de um veículo, tendo como base: registros de abastecimentos com quilometragem percorrida, litros abastecidos e preço do litro. O sistema é apenas uma demonstração, ele se baseia em um CRUD de abastecimento que calcula a média utilizando o total dos registros de KM e Litros total. O APP possui o sistema de autenticação e registros de dados pelo Firebase da Google. Os dados são todos guardados nos servidores Google, portanto, ficam amazedados na WEB e não no proprio dispositivo.
 
 
 
