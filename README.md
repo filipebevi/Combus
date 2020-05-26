@@ -7,9 +7,12 @@ App desenvolvido como item do meu portfolio. Trata-se de app para calcular a mé
 
 Aspectos técnicos:
 
-IDE: Android Studio |
-Linguagem: Java |
-Banco de dados: Firebase RealTime(NoSQL) |
+IDE: Android Studio
+
+Linguagem: Java
+
+Banco de dados: Firebase RealTime(NoSQL)
+
 Autenticação: Firebase Auth! 
 
 O sistema está preparado tambem para funcionar atraves do banco de dados próprio do android: SQLite. Atraves de uma InterfaceDAO, é possível injetar esta dependência, e utilizar o sistema com uma base de dados local.
